@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Carroussel</title>
+        <meta name="descritpion" content="description de ma page">
+        <link rel="stylesheet" href="style/style.css" />
+    </head>
+    <body>
+    <!--
+        Appel des données en Ajax (format JSON)
+        Fonctionnalités :
+        - Animation de l'afficage des titres et descriptions (alt) diff de l'animation des images
+        - Rognage des images ou autre solution
+        - Suivant, précédent, play, pause
+        - Hover Play pause
+        - Responsive et BEAU
+        - Administrable via une lsite de variable en haut de script
+        - Module de controle
+    -->
+        <div id="slideshow">
+            <div id="rail">
+            </div>
+        </div>
+        <button id="previous">Previous</button>
+        <button id="action">Play</button>
+        <button id="next">Next</button>
+
+        <script
+          src="https://code.jquery.com/jquery-3.2.1.min.js"
+          integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+          crossorigin="anonymous"></script>
+        <script src="js/script.js"></script>
+        <script>
+            maelSlider({
+                el: "#rail",
+                // autoPlay: true,
+                bullets: true,
+                test: false
+            });
+        </script>
+
+        <style>
+            .dots{
+                list-style: none;
+                text-align: center;
+            }
+            .dots li{
+                position: relative;
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin: 0 5px;
+                padding: 0;
+                cursor: pointer;
+            }
+        </style>
+    </body>
+</html>

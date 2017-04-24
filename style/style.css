@@ -1,0 +1,13 @@
+#slideshow{
+    width: 800px;
+    overflow: hidden;
+    margin: auto;
+}
+#rail{
+    position: relative;
+}
+#rail img{
+    width: 800px;
+    height: 400px;
+    object-fit: cover;
+}
