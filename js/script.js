@@ -16,10 +16,63 @@
 
 //Code propre :
 //To isolate jQuery and execute function
-(function ($){
+// (function ($){
+//    var WellSlide = {};
+//
+//
+//    WellSlide = (function() {
+//       var width = parseFloat($('#slideshow').css('width'));
+//       //For debug
+//       $('#rail').append('<img src="img/1.jpg" data-index="0">')
+//                 .append('<img src="img/2.jpg" data-index="1">')
+//                 .append('<img src="img/3.jpg" data-index="2">')
+//                 .append('<img src="img/1.jpg" data-index="3">')
+//                 .append('<img src="img/2.jpg" data-index="4">')
+//                 .append('<img src="img/3.jpg" data-index="5">')
+//                 .css('right', width+'px')
+//                 .css('width', $('#rail img').length * width+'px');
+//
+//
+//       WellSlide.prototype.autoPlay = function(){
+//          var _ = this;
+//          _.autoPlayClear();
+//          // var autoPlay =
+//       }
+//
+//       WellSlide.prototype.autoPlayClear = function(){
+//          var _ = this;
+//
+//       }
+//
+//       WellSlide.prototype.slideToLeft = function(){
+//          this.animate({
+//           right: "-="+width,
+//          }, 1000, function() {
+//              $('#rail').prepend($('img:last'));
+//              $(this).css('right',parseFloat($('#rail').css('right'))+width);
+//          });
+//       }
+//
+//       WellSlide.prototype.slideToRight = function(){
+//          this.animate({
+//            right: "+="+width,
+//          }, 1000, function() {
+//              $('#rail').append($('img:first'));
+//              $(this).css('right',parseFloat($('#rail').css('right'))-width);
+//          });
+//       }
+//
+//    });
+//
+//    $.fn.wellslide = function() {
+//       new WellSlide();
+//       return this;
+//    };
+//
+// })(jQuery);
 
-})(jQuery);
 
+//Lets see magic
 
 var width = parseFloat($('#slideshow').css('width'));
 $('#rail').css('right', width+'px');
@@ -48,7 +101,7 @@ $('#rail').append('<img src="img/3.jpg" data-index="5">')
 $('#rail').css('width', $('#rail img').length * width+'px');
 
 var play; //Global scope
-function maelSlider() {
+function wellslide() {
    'use strict';
 
 
@@ -65,13 +118,21 @@ function maelSlider() {
       }
    }
 
-   function moveToSlide(index){ //Prepare it (because actually it is launching it self) est-ce que c'est pcq .dots est crée ?
+   function moveToSlide(index){
       console.log(index);
+      $('#rail').animate({
+        right: index*width,
+      }, 1000, function() {
+          $('#rail').append($('img:first'));
+          $(this).css('right',parseFloat($('#rail').css('right'))-width);
+      });
       //Move to Index * width (transition do the style)
       //possibility for last and first : check if width = 0 or width = max and if so do the same as in the actual version
+      //Si on arrive a #rail.width = x*width alors revenir en arrière de 1 cran ?
    }
-   $('.dots button').click( moveToSlide('a') );
-
+   $('.dots button').click(function(){
+         moveToSlide($(this).data('index'));
+   });
 
    //Slide Right
    $('#previous').click(function(){
@@ -90,24 +151,22 @@ function maelSlider() {
          play = null;
       } else {
          $('button:nth-of-type(2)').text('Pause');
-         play = window.setInterval(autoPlay(el), 2000);
+         play = autoPlay(el);
       }
    })
    return this;
 };
 
-// function play(slide, direction = 'left', time){
-//    play = window.setInterval(function(){
-//       $(slide).slideLeft();
-//    }, time)
-// }
-
+//Wut :/ ?
 function autoPlay(slide){
+   clearInterval(play);
    play = window.setInterval(function(){
       $(slide).slideLeft();
    }, 2000);
 }
 
+//Slide to slide directement ?
+//Améliorer slide left pour pouvoir
 $.fn.extend({
     slideLeft: function(){
         this.animate({
