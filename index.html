@@ -6,6 +6,13 @@
         <meta name="descritpion" content="description de ma page">
         <link rel="stylesheet" href="style/style.css" />
     </head>
+    <style>
+    .dots button{
+        width: 20px;
+        height: 20px;
+        border-radius: 7px;
+    }
+    </style>
     <body>
     <!--
         Appel des données en Ajax (format JSON)
@@ -35,12 +42,14 @@
             // $("#rail").wellslide({
             // });
             //Part trashy
-            wellslide({
-                el: "#rail",
-                // autoPlay: true,
-                bullets: true,
-                test: false
-            });
+            // wellslide({
+            //     el: "#rail",
+            //     // autoPlay: true,
+            //     bullets: true,
+            //     test: false
+            // });
+
+            wellslide($('#rail'));
         </script>
 
         <style>
