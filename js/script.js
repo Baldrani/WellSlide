@@ -192,20 +192,59 @@
 var width = parseFloat($('#slideshow').css('width'));
 $('#rail').css('right', '0px');
 //For debug
-$('#rail').append('<img src="img/1.jpg" data-index="0" class="actual">')
+$('#rail').append('<img src="img/1.jpg" data-index="0">')
 $('#rail').append('<img src="img/2.jpg" data-index="1">')
 $('#rail').append('<img src="img/3.jpg" data-index="2">')
 $('#rail').append('<img src="img/1.jpg" data-index="3">')
 $('#rail').append('<img src="img/2.jpg" data-index="4">')
 $('#rail').append('<img src="img/3.jpg" data-index="5">')
 
+//For animation purpose
+$first = $('#rail img:first');
+$last = $('#rail img:last');
+$last.clone().addClass('ghost').prependTo('#rail');
+$first.clone().addClass('ghost').appendTo('#rail');
+
 $('#rail').css('width', $('#rail img').length * width+'px');
+
+$('#rail').css('right',width)
 
 function wellslide(el){
     'use strict';
     var _;
+
+    //TODO deplacer cran bleu
+    $('#previous').click(function(){
+        if(parseFloat(el.css('right')) == width){
+            el.animate({
+              right:parseFloat(el.css('right'))-width+'px',
+            }, 1000,function(){
+                el.css('right',($('#rail img').length-2)*width+'px')
+            });
+        } else {
+            el.animate({
+              right:parseFloat(el.css('right'))-width+'px',
+          }, 1000);
+        }
+    });
+
+    //TODO deplacer cran bleu
+    $('#next').click(function(){
+        if(parseFloat(el.css('right')) == ($('#rail img').length-2)*width){
+            el.animate({
+              right:parseFloat(el.css('right'))+width+'px',
+            }, 1000,function(){
+                el.css('right',width+'px')
+            });
+        } else {
+            el.animate({
+              right:parseFloat(el.css('right'))+width+'px',
+          }, 1000);
+        }
+    });
+
     el.parent().append('<ul class="dots"></ul>');
-    for(var i = 0; i < $('img').length; i++){
+    for(var i = 0; i < $('img:not(".ghost")').length; i++){
         $('.dots').append('<li><button type="button" data-role="none" role="button" data-index="'+i+'"></button>');
     }
 
@@ -216,15 +255,9 @@ function wellslide(el){
         $('.actualDots').removeClass('actualDots');
         _.addClass('actualDots');
         el.animate({
-          right: _.data('index')*width+'px',
+          right: _.data('index')*width+width+'px',
       }, 1000);
     })
-    // //Useless on change au click ?  ?
-    // $('.dots button').each(function(){
-    //     _ = $(this);
-    //     if(_.data('index') === $('.actual').data('index')){
-    //         _.css('background','blue');
-    //     }
-    // })
+
 
 }

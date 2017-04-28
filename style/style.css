@@ -10,6 +10,7 @@
     width: 800px;
     height: 400px;
     object-fit: cover;
+    float: left; //To get ride of gap
 }
 .actualDots{
     background: blue;
