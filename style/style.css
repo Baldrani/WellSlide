@@ -2,6 +2,7 @@
     width: 800px;
     overflow: hidden;
     margin: auto;
+    max-width: 100%;
 }
 #rail{
     position: relative;
@@ -10,8 +11,11 @@
     width: 800px;
     height: 400px;
     object-fit: cover;
-    float: left; //To get ride of gap
+    float: left; /* To get ride of gap */
 }
 .actualDots{
     background: blue;
+}
+button:focus {
+    outline: none;
 }

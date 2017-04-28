@@ -189,6 +189,9 @@
 
 
 //Nouvelle version crade
+
+//TODO Utiliser promise() ?
+//TODO Play Pause, Hover
 var width = parseFloat($('#slideshow').css('width'));
 $('#rail').css('right', '0px');
 //For debug
@@ -207,40 +210,61 @@ $first.clone().addClass('ghost').appendTo('#rail');
 
 $('#rail').css('width', $('#rail img').length * width+'px');
 
-$('#rail').css('right',width)
+$(document).ready(function() {
+    //Se passer de document.ready + breakpoint + on resize under breakpoint
+    $('img').css('width',width);
+});
+$('#rail').css('right',width);
 
 function wellslide(el){
     'use strict';
-    var _;
+    var _, play;
 
-    //TODO deplacer cran bleu
-    $('#previous').click(function(){
-        if(parseFloat(el.css('right')) == width){
-            el.animate({
-              right:parseFloat(el.css('right'))-width+'px',
-            }, 1000,function(){
-                el.css('right',($('#rail img').length-2)*width+'px')
-            });
-        } else {
-            el.animate({
-              right:parseFloat(el.css('right'))-width+'px',
-          }, 1000);
-        }
+    //TODO Try to make the thing identic as
+    function moveBullet(){
+        $('.actualDots').removeClass('actualDots');
+        $('.dots button').each(function(){
+            _ = $(this);
+            console.log(_.data('index')*width);
+            if(parseFloat($('#rail').css('right')) == (_.data('index')+1)*width){
+                _.addClass('actualDots');
+            }
+        });
+    }
+
+    function moveRight(){
+        el.animate({
+            right:parseFloat(el.css('right'))+width+'px',
+        }, 1000,function(){
+            if(parseFloat(el.css('right')) >= ($('#rail img').length-1)*width){
+                el.css('right',width+'px');
+            }
+            moveBullet();
+        });
+    }
+
+    function moveLeft(){
+        el.animate({
+          right:parseFloat(el.css('right'))-width+'px',
+        }, 1000,function(){
+            if(parseFloat(el.css('right')) <= 0){
+                el.css('right',($('#rail img').length-2)*width+'px');
+            }
+            moveBullet();
+        });
+    }
+
+    $('#previous').click(function(e){
+        moveLeft();
     });
 
-    //TODO deplacer cran bleu
     $('#next').click(function(){
-        if(parseFloat(el.css('right')) == ($('#rail img').length-2)*width){
-            el.animate({
-              right:parseFloat(el.css('right'))+width+'px',
-            }, 1000,function(){
-                el.css('right',width+'px')
-            });
-        } else {
-            el.animate({
-              right:parseFloat(el.css('right'))+width+'px',
-          }, 1000);
-        }
+        moveRight();
+    });
+
+    $('#action').click(function(){
+        clearInterval(play);
+        play = setInterval(moveRight,1000);
     });
 
     el.parent().append('<ul class="dots"></ul>');
