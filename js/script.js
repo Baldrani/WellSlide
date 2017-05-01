@@ -225,7 +225,6 @@ function wellslide(el){
         $('.actualDots').removeClass('actualDots');
         $('.dots button').each(function(){
             _ = $(this);
-            console.log(_.data('index')*width);
             if(parseFloat($('#rail').css('right')) == (_.data('index')+1)*width){
                 _.addClass('actualDots');
             }
@@ -262,9 +261,28 @@ function wellslide(el){
         moveRight();
     });
 
+    //A initialiser avec les conditions
     $('#action').click(function(){
+        if(play != false){
+            $(this).text('Play');
+            clearInterval(play);
+            play = false;
+        } else {
+            $(this).text('Pause');
+            clearInterval(play);
+            play = setInterval(moveRight,2000);
+        }
+    });
+
+    //On Hover
+    $('#slideshow').hover(function(){
+        $('#action').text('Play');
         clearInterval(play);
-        play = setInterval(moveRight,1000);
+        play = false;
+    },function(){
+        $('#action').text('Pause');
+        clearInterval(play);
+        play = setInterval(moveRight,2000);
     });
 
     el.parent().append('<ul class="dots"></ul>');
