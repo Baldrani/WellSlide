@@ -5,6 +5,7 @@
         <title>Carroussel</title>
         <meta name="descritpion" content="description de ma page">
         <link rel="stylesheet" href="style/style.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     </head>
     <style>
     .dots button{
@@ -25,13 +26,15 @@
         - Administrable via une lsite de variable en haut de script
         - Module de controle
     -->
-        <div id="slideshow">
-            <div id="rail">
+        <div id="container">
+            <div id="slideshow">
+                <div id="rail">
+                </div>
             </div>
+            <button id="previous"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+            <button id="play"><i class="fa fa-play-circle-o" aria-hidden="true"></i></button>
+            <button id="next"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
         </div>
-        <button id="previous">Previous</button>
-        <button id="action">Play</button>
-        <button id="next">Next</button>
 
         <script
           src="https://code.jquery.com/jquery-3.2.1.min.js"

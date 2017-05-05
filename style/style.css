@@ -1,3 +1,8 @@
+#container{
+    width: 800px;
+    margin: auto;
+    position: relative;
+}
 #slideshow{
     width: 800px;
     overflow: hidden;
@@ -18,4 +23,45 @@
 }
 button:focus {
     outline: none;
+}
+#previous{
+    position: absolute;
+    font-size: 30px;
+    top: calc(50% - 35px);
+    left: 5px;
+    width: 10%;
+    height: 70px;
+    margin: 5px;
+    opacity: 0;
+    transition: all 1s;
+    cursor: pointer;
+}
+#next{
+    position: absolute;
+    font-size: 30px;
+    top: calc(50% - 35px);
+    right: 5px;
+    height: auto;
+    width: 10%;
+    height: 70px;
+    margin: 5px;
+    opacity: 0;
+    transition: all 1s;
+    cursor: pointer;
+}
+#container:hover #next, #container:hover #previous, #container:hover #play {
+    opacity: 0.6;
+}
+#play{
+    position: absolute;
+    background: none;
+    border: 0;
+    color: #fff;
+    width: 80px;
+    left: calc(50% - 40px);
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+    font-size: 80px;
+    cursor: pointer;
 }
