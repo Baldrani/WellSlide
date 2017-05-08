@@ -122,6 +122,7 @@ $('#rail').css('right',width);
 function wellslide(el){
     'use strict';
     var _, play = false;
+    var slideToSlide;
 
     //TODO Try to make the thing identic as
     function moveBullet(){
@@ -156,21 +157,17 @@ function wellslide(el){
         });
     }
 
-    // //On Hover
-    //TODO put in hold and if labs de temps au survole, relancer
-    // $('#slideshow').hover(function(){
-    //     $('#action').text('Play');
-    //     clearInterval(play);
-    //     play = false;
-    // },function(){
-    //     $('#action').text('Pause');
-    //     clearInterval(play);
-    //     play = setInterval(moveRight,2000);
-    // });
+    // function moveToSlide(index){
+    //     $('.actualSlide').data('index') > index ? '-' : '';
+    //     el.animate({
+    //         right: width * index +'px';
+    //     }, 1000, function(){
+    //         moveBullet();
+    //     });
+    // }
 
     /* Partie Dots */
-    //TODO : LOOL
-    el.parent().parent().parent().append('<ul class="dots"></ul>');
+    el.parents('#container').after('<ul class="dots"></ul>');
     for(var i = 0; i < $('img:not(".ghost")').length; i++){
         $('.dots').append('<li><button type="button" data-role="none" role="button" data-index="'+i+'"></button>');
     }
@@ -188,21 +185,37 @@ function wellslide(el){
 
     $('#previous').click(function(e){
         moveLeft();
+        // slideToSlide = $('.slideToSlide').data('id') + 1;
+        // moveToSlide(slideToSlide);
     });
 
     $('#next').click(function(){
         moveRight();
     });
 
+
+    //PLAY AND HOVER PAUSE GOOD
     $('#play').click(function(){
         $(this).find('.fa').toggleClass('fa-pause-circle-o fa-play-circle-o');
-        console.log(false);
         if(play == false){
+            moveRight();
             play = window.setInterval(moveRight,2000);
         } else {
             clearInterval(play);
             play = false;
         }
-    })
+    });
+
+    $('#container').hover(function(){
+        if(play != false){
+            clearInterval(play);
+            play = 'pause';
+        }
+    }, function(){
+        if(play == 'pause'){
+            moveRight();
+            play = window.setInterval(moveRight,2000);
+        }
+    });
 
 }
