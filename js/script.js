@@ -83,15 +83,11 @@
 //     fire = true;
 // }, true);
 
-//Call des fichiers json (trop lourd)
-// var json = $.getJSON('https://www.skrzypczyk.fr/slideshow.php',function(data){
-//     data.forEach(function(el){
-//         $('#rail').append('<img src="'+el.url+'" alt="'+el.desc+'">');
-//     })
-// });
+
+
 
 //Nouvelle version crade
-
+//TODO Default value for speed etc + let possibility to edit
 //TODO Utiliser promise() ?
 //TODO Play Pause, Hover
 //TODO SlideToSlide (On click on left or right, put slideToSlide to the prev or next and launch slideToSlide function())
@@ -104,6 +100,14 @@ $('#rail').append('<img src="img/3.jpg" data-index="2">')
 $('#rail').append('<img src="img/1.jpg" data-index="3">')
 $('#rail').append('<img src="img/2.jpg" data-index="4">')
 $('#rail').append('<img src="img/3.jpg" data-index="5">')
+
+// // Call des fichiers json (trop lourd)
+// var json = $.getJSON('https://www.skrzypczyk.fr/slideshow.php',function(data){
+//     console.log(data);
+//     data.forEach(function(el){
+//         $('#rail').append('<img src="'+el.url+'" data-desc="'+el.desc+'" data-title="'+el.title+'">');
+//     })
+// });
 
 //For animation purpose
 $first = $('#rail img:first');
@@ -181,6 +185,10 @@ function wellslide(el){
         el.animate({
           right: _.data('index')*width+width+'px',
       }, 1000);
+      if(play != false){
+          clearInterval(play);
+          play = window.setInterval(moveRight,2000);
+      }
     })
 
     $('#previous').click(function(e){
@@ -194,7 +202,7 @@ function wellslide(el){
     });
 
 
-    //PLAY AND HOVER PAUSE GOOD
+    //PLAY AND HOVER PAUSE GOOD + Fix
     $('#play').click(function(){
         $(this).find('.fa').toggleClass('fa-pause-circle-o fa-play-circle-o');
         if(play == false){
