@@ -89,8 +89,8 @@
 //Nouvelle version crade
 //TODO Default value for speed etc + let possibility to edit
 //TODO Utiliser promise() ?
-//TODO Play Pause, Hover
 //TODO SlideToSlide (On click on left or right, put slideToSlide to the prev or next and launch slideToSlide function())
+//TODO rajouter possibilité de cacher le play pause button
 var width = parseFloat($('#slideshow').css('width'));
 $('#rail').css('right', '0px');
 //For debug
@@ -125,7 +125,7 @@ $('#rail').css('right',width);
 
 function wellslide(el){
     'use strict';
-    var _, play = false;
+    var _, play = false, moving = false;
     var slideToSlide;
 
     //TODO Try to make the thing identic as
@@ -140,25 +140,33 @@ function wellslide(el){
     }
 
     function moveRight(){
-        el.animate({
-            right:parseFloat(el.css('right'))+width+'px',
-        }, 1000,function(){
-            if(parseFloat(el.css('right')) >= ($('#rail img').length-1)*width){
-                el.css('right',width+'px');
-            }
-            moveBullet();
-        });
+        if(moving ==false){
+            moving = true;
+            el.animate({
+                right:parseFloat(el.css('right'))+width+'px',
+            }, 1000,function(){
+                if(parseFloat(el.css('right')) >= ($('#rail img').length-1)*width){
+                    el.css('right',width+'px');
+                }
+                moveBullet();
+                moving = false;
+            });
+        }
     }
 
     function moveLeft(){
-        el.animate({
-          right:parseFloat(el.css('right'))-width+'px',
-        }, 1000,function(){
-            if(parseFloat(el.css('right')) <= 0){
-                el.css('right',($('#rail img').length-2)*width+'px');
-            }
-            moveBullet();
-        });
+        if(moving == false){
+            moving = true;
+            el.animate({
+              right:parseFloat(el.css('right'))-width+'px',
+            }, 1000,function(){
+                if(parseFloat(el.css('right')) <= 0){
+                    el.css('right',($('#rail img').length-2)*width+'px');
+                }
+                moveBullet();
+                moving = false;
+            });
+        }
     }
 
     // function moveToSlide(index){
@@ -171,7 +179,7 @@ function wellslide(el){
     // }
 
     /* Partie Dots */
-    el.parents('#container').after('<ul class="dots"></ul>');
+    el.after('<ul class="dots"></ul>');
     for(var i = 0; i < $('img:not(".ghost")').length; i++){
         $('.dots').append('<li><button type="button" data-role="none" role="button" data-index="'+i+'"></button>');
     }
