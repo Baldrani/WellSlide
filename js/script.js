@@ -39,11 +39,6 @@
 //          // var autoPlay =
 //       }
 //
-//       WellSlide.prototype.autoPlayClear = function(){
-//          var _ = this;
-//
-//       }
-//
 //       WellSlide.prototype.slideToLeft = function(){
 //          this.animate({
 //           right: "-="+width,
@@ -83,23 +78,22 @@
 //     fire = true;
 // }, true);
 
-
-
-
-//Nouvelle version crade
 //TODO Default value for speed etc + let possibility to edit
 //TODO Utiliser promise() ?
 //TODO SlideToSlide (On click on left or right, put slideToSlide to the prev or next and launch slideToSlide function())
 //TODO rajouter possibilité de cacher le play pause button
+//TODO height: se caler sur la première image ?
+//TODO responsive attribute data-index
+
 var width = parseFloat($('#slideshow').css('width'));
-$('#rail').css('right', '0px');
+
 //For debug
-$('#rail').append('<img src="img/1.jpg" data-index="0" class="slideToSlide">')
-$('#rail').append('<img src="img/2.jpg" data-index="1">')
-$('#rail').append('<img src="img/3.jpg" data-index="2">')
-$('#rail').append('<img src="img/1.jpg" data-index="3">')
-$('#rail').append('<img src="img/2.jpg" data-index="4">')
-$('#rail').append('<img src="img/3.jpg" data-index="5">')
+// $('#rail').append('<img src="img/1.jpg" data-index="0" class="slideToSlide">')
+//           .append('<img src="img/2.jpg" data-index="1">')
+//           .append('<img src="img/3.jpg" data-index="2">')
+//           .append('<img src="img/1.jpg" data-index="3">')
+//           .append('<img src="img/2.jpg" data-index="4">')
+//           .append('<img src="img/3.jpg" data-index="5">')
 
 // // Call des fichiers json (trop lourd)
 // var json = $.getJSON('https://www.skrzypczyk.fr/slideshow.php',function(data){
@@ -116,12 +110,20 @@ $last.clone().addClass('ghost').prependTo('#rail');
 $first.clone().addClass('ghost').appendTo('#rail');
 
 $('#rail').css('width', $('#rail img').length * width+'px');
+$('#rail').css('right',width);
 
 $(document).ready(function() {
     //Se passer de document.ready + breakpoint + on resize under breakpoint
     $('img').css('width',width);
 });
-$('#rail').css('right',width);
+
+//Responsive
+$('img:not(.ghost)').first().addClass('actualSlide');
+$(window).resize(function(){
+    $('img').css('width',parseFloat($('#slideshow').css('width')));
+    $('#rail').css('width', ($('#rail img').length * parseFloat($('#slideshow').css('width')))+'px');
+});
+
 
 function wellslide(el){
     'use strict';
@@ -149,6 +151,10 @@ function wellslide(el){
                     el.css('right',width+'px');
                 }
                 moveBullet();
+                //Move actual Slide (for responsive)
+                $('img.actualSlide').next('img:not(.ghost)').addClass('actualSlide')
+                $('img.actualSlide:first').removeClass('actualSlide')
+                
                 moving = false;
             });
         }

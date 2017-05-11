@@ -16,8 +16,6 @@
     position: relative;
 }
 #rail img{
-    /*width: 800px;*/
-    width: 100%;
     height: 400px;
     object-fit: cover;
     float: left; /* To get ride of gap */
