@@ -15,56 +15,46 @@
 */
 
 //Code propre :
-//To isolate jQuery and execute function
-// (function ($){
-//    var WellSlide = {};
-//
-//
-//    WellSlide = (function() {
-//       var width = parseFloat($('#slideshow').css('width'));
-//       //For debug
-//       $('#rail').append('<img src="img/1.jpg" data-index="0">')
-//                 .append('<img src="img/2.jpg" data-index="1">')
-//                 .append('<img src="img/3.jpg" data-index="2">')
-//                 .append('<img src="img/1.jpg" data-index="3">')
-//                 .append('<img src="img/2.jpg" data-index="4">')
-//                 .append('<img src="img/3.jpg" data-index="5">')
-//                 .css('right', width+'px')
-//                 .css('width', $('#rail img').length * width+'px');
-//
-//
-//       WellSlide.prototype.autoPlay = function(){
-//          var _ = this;
-//          _.autoPlayClear();
-//          // var autoPlay =
-//       }
-//
-//       WellSlide.prototype.slideToLeft = function(){
-//          this.animate({
-//           right: "-="+width,
-//          }, 1000, function() {
-//              $('#rail').prepend($('img:last'));
-//              $(this).css('right',parseFloat($('#rail').css('right'))+width);
-//          });
-//       }
-//
-//       WellSlide.prototype.slideToRight = function(){
-//          this.animate({
-//            right: "+="+width,
-//          }, 1000, function() {
-//              $('#rail').append($('img:first'));
-//              $(this).css('right',parseFloat($('#rail').css('right'))-width);
-//          });
-//       }
-//
-//    });
-//
-//    $.fn.wellslide = function() {
-//       new WellSlide();
-//       return this;
-//    };
-//
-// })(jQuery);
+// To isolate jQuery and execute function
+(function ($){
+   var wellslide = {};
+
+
+   wellslide = (function() {
+
+
+      wellslide.prototype.autoPlay = function(){
+         var _ = this;
+         _.autoPlayClear();
+         // var autoPlay =
+      }
+
+      wellslide.prototype.slideToLeft = function(){
+         this.animate({
+          right: "-="+width,
+         }, options['speed'], function() {
+             $('#rail').prepend($('img:last'));
+             $(this).css('right',parseFloat($('#rail').css('right'))+width);
+         });
+      }
+
+      wellslide.prototype.slideToRight = function(){
+         this.animate({
+           right: "+="+width,
+         }, options['speed'], function() {
+             $('#rail').append($('img:first'));
+             $(this).css('right',parseFloat($('#rail').css('right'))-width);
+         });
+      }
+
+   });
+
+   $.fn.wellslide = function() {
+      new wellslide();
+      return this;
+   };
+
+})(jQuery);
 
 
 //Lets see magic
@@ -83,17 +73,17 @@
 //TODO SlideToSlide (On click on left or right, put slideToSlide to the prev or next and launch slideToSlide function())
 //TODO rajouter possibilité de cacher le play pause button
 //TODO height: se caler sur la première image ?
-//TODO responsive attribute data-index
+//TODO change moveRight or Left with MoveToSlide ?
 
 var width = parseFloat($('#slideshow').css('width'));
 
 //For debug
-$('#rail').append('<img src="img/1.jpg" data-index="0" class="slideToSlide">')
-          .append('<img src="img/2.jpg" data-index="1">')
-          .append('<img src="img/3.jpg" data-index="2">')
-          .append('<img src="img/1.jpg" data-index="3">')
-          .append('<img src="img/2.jpg" data-index="4">')
-          .append('<img src="img/3.jpg" data-index="5">')
+// $('#rail').append('<img src="img/1.jpg" data-index="0" class="slideToSlide">')
+//           .append('<img src="img/2.jpg" data-index="1">')
+//           .append('<img src="img/3.jpg" data-index="2">')
+//           .append('<img src="img/1.jpg" data-index="3">')
+//           .append('<img src="img/2.jpg" data-index="4">')
+//           .append('<img src="img/3.jpg" data-index="5">')
 
 // // Call des fichiers json (trop lourd)
 // var json = $.getJSON('https://www.skrzypczyk.fr/slideshow.php',function(data){
@@ -111,44 +101,42 @@ $first.clone().addClass('ghost').appendTo('#rail');
 
 $('#rail').css('width', $('#rail img').length * width+'px');
 $('#rail').css('right',width);
-
-$(document).ready(function() {
-    //Se passer de document.ready + breakpoint + on resize under breakpoint
-    $('img').css('width',width);
-});
+$('img').css('width',width);
 
 //Responsive
 $('img:not(.ghost)').first().addClass('actualSlide');
-$(window).resize(function(){
-    width = parseFloat($('#slideshow').css('width'));
-    $('img').css('width',width);
-    $('#rail').css('width', ($('#rail img').length * width)+'px');
-    $('#rail').css('right', ($('.actualSlide').data('index')+1) * width); //1 for ghost
-});
 
 
-function wellslide(el){
+
+// $('#play').toggle();
+
+function wellslide(el,params){
+
     'use strict';
     var _, play = false, moving = false;
-    var slideToSlide;
 
-    //TODO Try to make the thing identic as
-    function moveBullet(){
-        $('.actualDots').removeClass('actualDots');
-        $('.dots button').each(function(){
-            _ = $(this);
-            if(parseFloat($('#rail').css('right')) == (_.data('index')+1)*width){
-                _.addClass('actualDots');
-            }
-        });
+    var options = {
+        autoPlay: true,
+        speed: 3000,
+        hidePlay: false,
+        width: 'test',
+        bullets: false,
+        arrow: true,
     }
 
+    Object.keys(options).forEach(function(key){
+        if(params[key] != undefined){
+            options[key] = params[key];
+        }
+    });
+
+    //ARROW PART
     function moveRight(){
         if(moving ==false){
             moving = true;
             el.animate({
                 right:parseFloat(el.css('right'))+width+'px',
-            }, 1000,function(){
+            }, options['speed'],function(){
                 if(parseFloat(el.css('right')) >= ($('#rail img').length-1)*width){
                     el.css('right',width+'px');
                 }
@@ -164,13 +152,12 @@ function wellslide(el){
             });
         }
     }
-
     function moveLeft(){
         if(moving == false){
             moving = true;
             el.animate({
               right:parseFloat(el.css('right'))-width+'px',
-            }, 1000,function(){
+          }, options['speed'],function(){
                 if(parseFloat(el.css('right')) <= 0){
                     el.css('right',($('#rail img').length-2)*width+'px');
                 }
@@ -185,69 +172,78 @@ function wellslide(el){
             });
         }
     }
-
-    // function moveToSlide(index){
-    //     $('.actualSlide').data('index') > index ? '-' : '';
-    //     el.animate({
-    //         right: width * index +'px';
-    //     }, 1000, function(){
-    //         moveBullet();
-    //     });
-    // }
-
-    /* Partie Dots */
-    el.after('<ul class="dots"></ul>');
-    for(var i = 0; i < $('img:not(".ghost")').length; i++){
-        $('.dots').append('<li><button type="button" data-role="none" role="button" data-index="'+i+'"></button>');
-    }
-
-    $('.dots button:first').addClass('actualDots');
-
-    $('.dots button').click(function(){
-        if(moving == false){
-            moving = true;
-            _ = $(this);
-
-            $('.actualSlide').removeClass('actualSlide');
-            $('img:not(.ghost)[data-index="'+_.data('index')+'"]').addClass('actualSlide');
-
-            $('.actualDots').removeClass('actualDots');
-            _.addClass('actualDots');
-            el.animate({
-                right: _.data('index')*width+width+'px',
-            }, 1000, function(){
-                moving = false;
-            });
-            if(play != false){
-                clearInterval(play);
-                play = window.setInterval(moveRight,2000);
-            }
-        }
-    })
-
     $('#previous').click(function(e){
         moveLeft();
-        // slideToSlide = $('.slideToSlide').data('id') + 1;
-        // moveToSlide(slideToSlide);
     });
-
     $('#next').click(function(){
         moveRight();
     });
 
+    /* Partie Dots */
+    //TODO Try to make the thing identic as
+    function moveBullet(){
+        $('.actualDots').removeClass('actualDots');
+        $('.dots button').each(function(){
+            _ = $(this);
+            if(parseFloat($('#rail').css('right')) == (_.data('index')+1)*width){
+                _.addClass('actualDots');
+            }
+        });
+    }
+
+    if(options['bullets']){
+        el.after('<ul class="dots"></ul>');
+        for(var i = 0; i < $('img:not(".ghost")').length; i++){
+            $('.dots').append('<li><button type="button" data-role="none" role="button" data-index="'+i+'"></button>');
+        }
+        $('.dots button:first').addClass('actualDots');
+
+        $('.dots button').click(function(){
+            if(moving == false){
+                moving = true;
+                _ = $(this);
+
+                $('.actualSlide').removeClass('actualSlide');
+                $('img:not(.ghost)[data-index="'+_.data('index')+'"]').addClass('actualSlide');
+
+                $('.actualDots').removeClass('actualDots');
+                _.addClass('actualDots');
+                el.animate({
+                    right: _.data('index')*width+width+'px',
+                }, options['speed'], function(){
+                    moving = false;
+                });
+                if(play != false){
+                    clearInterval(play);
+                    play = window.setInterval(moveRight,options['speed']);
+                }
+            }
+        })
+    }
+
+    //RESPONSIVE
+    $(window).resize(function(){
+        width = parseFloat($('#slideshow').css('width'));
+        $('img').css('width',width);
+        $('#rail').css('width', ($('#rail img').length * width)+'px');
+        $('#rail').css('right', ($('.actualSlide').data('index')+1) * width); //1 for ghost
+    });
+
 
     //PLAY AND HOVER PAUSE GOOD + Fix
-    $('#play').click(function(){
-        $(this).find('.fa').toggleClass('fa-pause-circle-o fa-play-circle-o');
+    function playSlide(){
+        $('#play').find('.fa').toggleClass('fa-pause-circle-o fa-play-circle-o');
         if(play == false){
             moveRight();
-            play = window.setInterval(moveRight,2000);
+            play = window.setInterval(moveRight,options['speed']);
         } else {
             clearInterval(play);
             play = false;
         }
+    }
+    $('#play').click(function(){
+        playSlide();
     });
-
     $('#container').hover(function(){
         if(play != false){
             clearInterval(play);
@@ -256,8 +252,12 @@ function wellslide(el){
     }, function(){
         if(play == 'pause'){
             moveRight();
-            play = window.setInterval(moveRight,2000);
+            play = window.setInterval(moveRight,options['speed']);
         }
     });
+
+    if(options['autoPlay']){
+        playSlide();
+    }
 
 }

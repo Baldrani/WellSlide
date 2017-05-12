@@ -20,12 +20,9 @@ body{
     position: relative;
 }
 #rail img{
-    height: 400px; /* If set, does break the responsiv but fix the bug on the left */
+    /*height: 400px; /* If set, does break the responsiv but fix the bug on the left */*/
     object-fit: cover;
     float: left; /* To get ride of gap */
-}
-.actualDots{
-    background: blue;
 }
 button:focus {
     outline: none;
@@ -89,7 +86,6 @@ button:focus {
     height: 20px;
     margin: 0 5px;
     padding: 0;
-    cursor: pointer;
 }
 .dots button{
     width: 20px;
@@ -97,6 +93,7 @@ button:focus {
     border-radius: 100%;
     border: 2px solid #fff;
     background: transparent;
+    cursor: pointer;
 }
 button.actualDots {
     background: #fff;

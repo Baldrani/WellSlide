@@ -22,8 +22,8 @@
         <div id="container">
             <div id="slideshow">
                 <div id="rail">
-                    <!-- <img src="https://dev.voyagemotion.com/images/slide/1.png" data-title="On vera" data-content="On verra" data-index="0"/> -->
-                    <!-- <img src="https://dev.voyagemotion.com/images/slide/2.png" data-title="On vera" data-content="On verra" data-index="1"/> -->
+                    <img src="https://dev.voyagemotion.com/images/slide/1.png" data-title="On vera" data-content="On verra" data-index="0"/>
+                    <img src="https://dev.voyagemotion.com/images/slide/2.png" data-title="On vera" data-content="On verra" data-index="1"/>
                 </div>
             </div>
             <button id="previous"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
@@ -46,7 +46,10 @@
             //     bullets: true,
             //     test: false
             // });element.style {
-            wellslide($('#rail'));
+            wellslide($('#rail'),{
+                autoPlay: true,
+                bullets: true,
+            });
         </script>
     </body>
 </html>
