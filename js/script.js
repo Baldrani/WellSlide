@@ -123,7 +123,7 @@ $(window).resize(function(){
     width = parseFloat($('#slideshow').css('width'));
     $('img').css('width',width);
     $('#rail').css('width', ($('#rail img').length * width)+'px');
-    $('#rail').css('right', $('.actualSlide').data('index') * width);
+    $('#rail').css('right', ($('.actualSlide').data('index')+1) * width); //1 for ghost
 });
 
 
@@ -207,6 +207,10 @@ function wellslide(el){
         if(moving == false){
             moving = true;
             _ = $(this);
+
+            $('.actualSlide').removeClass('actualSlide');
+            $('img:not(.ghost)[data-index="'+_.data('index')+'"]').addClass('actualSlide');
+
             $('.actualDots').removeClass('actualDots');
             _.addClass('actualDots');
             el.animate({
