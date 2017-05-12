@@ -1,15 +1,4 @@
-body{
-    margin: 0;
-}
-
-#container{
-    /*width: 800px;*/
-    width: 100%;
-    margin: auto;
-    position: relative;
-}
 #slideshow{
-    /*width: 800px;*/
     width: 100%;
     overflow: hidden;
     margin: auto;
@@ -32,7 +21,7 @@ button:focus {
     font-size: 30px;
     top: calc(50% - 35px);
     left: 5px;
-    width: 10%;
+    width: 70px;
     height: 70px;
     margin: 5px;
     opacity: 0;
@@ -45,14 +34,14 @@ button:focus {
     top: calc(50% - 35px);
     right: 5px;
     height: auto;
-    width: 10%;
+    width: 70px;
     height: 70px;
     margin: 5px;
     opacity: 0;
     transition: all 1s;
     cursor: pointer;
 }
-#container:hover #next, #container:hover #previous, #container:hover #play {
+#slideshow:hover #next, #slideshow:hover #previous, #slideshow:hover #play {
     opacity: 0.6;
 }
 #play{
