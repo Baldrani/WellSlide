@@ -1,3 +1,7 @@
+body{
+    margin: 0;
+}
+
 #container{
     /*width: 800px;*/
     width: 100%;
@@ -16,7 +20,7 @@
     position: relative;
 }
 #rail img{
-    height: 400px;
+    height: 400px; /* If set, does break the responsiv but fix the bug on the left */
     object-fit: cover;
     float: left; /* To get ride of gap */
 }

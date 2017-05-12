@@ -88,12 +88,12 @@
 var width = parseFloat($('#slideshow').css('width'));
 
 //For debug
-// $('#rail').append('<img src="img/1.jpg" data-index="0" class="slideToSlide">')
-//           .append('<img src="img/2.jpg" data-index="1">')
-//           .append('<img src="img/3.jpg" data-index="2">')
-//           .append('<img src="img/1.jpg" data-index="3">')
-//           .append('<img src="img/2.jpg" data-index="4">')
-//           .append('<img src="img/3.jpg" data-index="5">')
+$('#rail').append('<img src="img/1.jpg" data-index="0" class="slideToSlide">')
+          .append('<img src="img/2.jpg" data-index="1">')
+          .append('<img src="img/3.jpg" data-index="2">')
+          .append('<img src="img/1.jpg" data-index="3">')
+          .append('<img src="img/2.jpg" data-index="4">')
+          .append('<img src="img/3.jpg" data-index="5">')
 
 // // Call des fichiers json (trop lourd)
 // var json = $.getJSON('https://www.skrzypczyk.fr/slideshow.php',function(data){
@@ -120,8 +120,10 @@ $(document).ready(function() {
 //Responsive
 $('img:not(.ghost)').first().addClass('actualSlide');
 $(window).resize(function(){
-    $('img').css('width',parseFloat($('#slideshow').css('width')));
-    $('#rail').css('width', ($('#rail img').length * parseFloat($('#slideshow').css('width')))+'px');
+    width = parseFloat($('#slideshow').css('width'));
+    $('img').css('width',width);
+    $('#rail').css('width', ($('#rail img').length * width)+'px');
+    $('#rail').css('right', $('.actualSlide').data('index') * width);
 });
 
 
@@ -152,9 +154,12 @@ function wellslide(el){
                 }
                 moveBullet();
                 //Move actual Slide (for responsive)
-                $('img.actualSlide').next('img:not(.ghost)').addClass('actualSlide')
-                $('img.actualSlide:first').removeClass('actualSlide')
-                
+                var next = $('img.actualSlide').removeClass('actualSlide').next('img:not(.ghost)');
+                if( next.length != 0){
+                    next.addClass('actualSlide');
+                } else {
+                    $('img:not(.ghost):first').addClass('actualSlide')
+                }
                 moving = false;
             });
         }
@@ -170,6 +175,12 @@ function wellslide(el){
                     el.css('right',($('#rail img').length-2)*width+'px');
                 }
                 moveBullet();
+                var prev = $('img.actualSlide').removeClass('actualSlide').prev('img:not(.ghost)');
+                if( prev.length != 0){
+                    prev.addClass('actualSlide');
+                } else {
+                    $('img:not(.ghost):last').addClass('actualSlide')
+                }
                 moving = false;
             });
         }
@@ -193,16 +204,21 @@ function wellslide(el){
     $('.dots button:first').addClass('actualDots');
 
     $('.dots button').click(function(){
-        _ = $(this);
-        $('.actualDots').removeClass('actualDots');
-        _.addClass('actualDots');
-        el.animate({
-          right: _.data('index')*width+width+'px',
-      }, 1000);
-      if(play != false){
-          clearInterval(play);
-          play = window.setInterval(moveRight,2000);
-      }
+        if(moving == false){
+            moving = true;
+            _ = $(this);
+            $('.actualDots').removeClass('actualDots');
+            _.addClass('actualDots');
+            el.animate({
+                right: _.data('index')*width+width+'px',
+            }, 1000, function(){
+                moving = false;
+            });
+            if(play != false){
+                clearInterval(play);
+                play = window.setInterval(moveRight,2000);
+            }
+        }
     })
 
     $('#previous').click(function(e){
