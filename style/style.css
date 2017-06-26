@@ -9,7 +9,8 @@
     position: relative;
 }
 #rail img{
-    /*height: 400px; /* If set, does break the responsiv but fix the bug on the left */*/
+    height: 400px; /* If set, does break the responsiv but fix the bug on the left */
+    width: 100%;
     object-fit: cover;
     float: left; /* To get ride of gap */
 }
