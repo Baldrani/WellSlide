@@ -1,62 +1,3 @@
-/*
-    Fonctionnalités :
-    - Animation de l'afficage des titres et descriptions (alt) diff de l'animation des images
-    - Rognage des images ou autre solution
-    - Suivant, précédent, play, pause
-    - Hover Play pause
-    - Responsive et BEAU
-    - Administrable via une lsite de variable en haut de script
-    - Module de controle
-*/
-
-//Code propre :
-// To isolate jQuery and execute function
-// (function ($){
-//    var wellslide = {};
-//
-//    wellslide = (function() {
-//
-//
-//       wellslide.prototype.autoPlay = function(){
-//          var _ = this;
-//          _.autoPlayClear();
-//          // var autoPlay =
-//       }
-//
-//       wellslide.prototype.slideToLeft = function(){
-//          this.animate({
-//           right: "-="+width,
-//          }, options['speed'], function() {
-//              $('#rail').prepend($('#rail img:last'));
-//              $(this).css('right',parseFloat($('#rail').css('right'))+width);
-//          });
-//       }
-//
-//       wellslide.prototype.slideToRight = function(){
-//          this.animate({
-//            right: "+="+width,
-//          }, options['speed'], function() {
-//              $('#rail').append($('#rail img:first'));
-//              $(this).css('right',parseFloat($('#rail').css('right'))-width);
-//          });
-//       }
-//
-//    });
-//
-//    $.fn.wellslide = function() {
-//       new wellslide();
-//       return this;
-//    };
-//
-//    // Object.prototype.toLocaleString();
-//
-// })(jQuery);
-
-
-
-
-
-
 function wellslide(obj){
     'use strict';
 
@@ -119,11 +60,11 @@ function wellslide(obj){
     var _, play = false, moving = false;
 
     var options = {
-        autoPlay: true,
         speed: 3000,
-        hidePlay: false,
-        bullets: true,
         arrow: true,
+        bullets: true,
+        autoPlay: false,
+        hidePlay: false,
     }
 
     Object.keys(options).forEach(function(key){
@@ -177,6 +118,7 @@ function wellslide(obj){
             animateText();
         }
     };
+
     function moveLeft(){
         if(moving == false){
             moving = true;
@@ -266,6 +208,8 @@ function wellslide(obj){
             play = window.setInterval(moveRight,options['speed']);
         }
     });
+
+    console.log(options);
 
     if(options['bullets']){
         // $('.dots').toggle();
