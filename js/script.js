@@ -1,8 +1,3 @@
-
-// précedent : on tire l'image vers le debut puis on déplace le cadre
-//Rajouter nb slide voulu
-//Ajouter attribut :
-
 /*
     Fonctionnalités :
     - Animation de l'afficage des titres et descriptions (alt) diff de l'animation des images
@@ -108,8 +103,34 @@ function wellslide(obj){
         rail.find('img:not(.ghost)').each(function(index){
             $(this).attr('data-index',index);
         });
-    });
+        //Bullets part ~~~TODO WTFFFF ??
+        $el.append('<ul class="dots"></ul>');
+        $('#rail img:not(.ghost)').each(function(index, el){
+            $('.dots').append('<li><button type="button" data-role="none" role="button" data-index="'+index+'"></button>');
+        });
+        $('.dots button:first').addClass('actualDots');
+        $('.dots button').click(function(){
+            if(moving == false){
+                moving = true;
+                _ = $(this);
 
+                $('.actualSlide').removeClass('actualSlide');
+                $('#rail img:not(.ghost)[data-index="'+_.data('index')+'"]').addClass('actualSlide');
+
+                $('.actualDots').removeClass('actualDots');
+                _.addClass('actualDots');
+                rail.animate({
+                    right: _.data('index')*width+width+'px',
+                }, options['speed'], function(){
+                    moving = false;
+                });
+                if(play != false){
+                    clearInterval(play);
+                    play = window.setInterval(moveRight,options['speed']);
+                }
+            }
+        });
+    });
 
     var _, play = false, moving = false;
 
@@ -131,6 +152,7 @@ function wellslide(obj){
     function moveRight(){
         if(moving ==false){
             moving = true;
+            //Part title and desc
             $('#title').animate({
                 left: -$('#title').width() * 2
             }, options['speed']/2, function(){
@@ -140,8 +162,10 @@ function wellslide(obj){
                     left: 0
                 }, options['speed']/2)
             });
-
-
+            $('#description').fadeOut(options['speed']/2, function() {
+                $('#description').text($('.actualSlide').next('#rail img:not(.ghost)').data('desc'));
+                $('#description').fadeIn(options['speed']/2)
+            })
 
             rail.animate({
                 right: parseFloat(rail.css('right'))+width+'px',
@@ -163,6 +187,21 @@ function wellslide(obj){
     }
     function moveLeft(){
         if(moving == false){
+
+            $('#title').animate({
+                left: -$('#title').width() * 2
+            }, options['speed']/2, function(){
+                //TODO FIND A BETTER SOLUTION THERE
+                $('#title').text($('.actualSlide').next('#rail img:not(.ghost)').data('title'));
+                $('#title').animate({
+                    left: 0
+                }, options['speed']/2)
+            });
+            $('#description').fadeOut(options['speed']/2, function() {
+                $('#description').text($('.actualSlide').next('#rail img:not(.ghost)').data('desc'));
+                $('#description').fadeIn(options['speed']/2)
+            })
+
             moving = true;
             rail.animate({
               right:parseFloat(rail.css('right'))-width+'px',
@@ -195,37 +234,6 @@ function wellslide(obj){
             _ = $(this);
             if(parseFloat($('#rail').css('right')) == (_.data('index')+1)*width){
                 _.addClass('actualDots');
-            }
-        });
-    }
-    //TODO SEE WHERE IS THE PB
-    if(options['bullets']){
-        $el.append('<ul class="dots"></ul>', function(){
-            for(var i = 0; i < $('#rail img:not(.ghost)').length; i++){
-                $('.dots').append('<li><button type="button" data-role="none" role="button" data-index="'+i+'"></button>');
-            }
-        });
-        $('.dots button:first').addClass('actualDots');
-
-        $('.dots button').click(function(){
-            if(moving == false){
-                moving = true;
-                _ = $(this);
-
-                $('.actualSlide').removeClass('actualSlide');
-                $('#rail img:not(.ghost)[data-index="'+_.data('index')+'"]').addClass('actualSlide');
-
-                $('.actualDots').removeClass('actualDots');
-                _.addClass('actualDots');
-                rail.animate({
-                    right: _.data('index')*width+width+'px',
-                }, options['speed'], function(){
-                    moving = false;
-                });
-                if(play != false){
-                    clearInterval(play);
-                    play = window.setInterval(moveRight,options['speed']);
-                }
             }
         });
     }
@@ -264,8 +272,9 @@ function wellslide(obj){
         }
     });
 
+    if(options['bullets']){
 
-
+    }
     if(options['autoPlay']){
         playSlide();
     }
