@@ -76,13 +76,12 @@ function wellslide(obj){
        .append('<button id="previous" style="z-index: 2"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>')
        .append('<button id="play" style="z-index: 2"><i class="fa fa-play-circle-o" aria-hidden="true"></i></button>')
        .append('<button id="next" style="z-index: 2"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>')
-       .append('<div id="title"></div>')
-       .append('<div id="description"></div>');
+       .append('<div id="title">Ce titre est court</div>')
+       .append('<div id="description">Description</div>');
 
     var rail = $el.find('#rail');
 
     // Call des fichiers json
-    // TODO ajouter une condition pour founir une url ?
     $.ajax({
         type: "GET",
         url: "https://www.skrzypczyk.fr/slideshow.php",
@@ -112,8 +111,6 @@ function wellslide(obj){
     });
 
 
-
-
     var _, play = false, moving = false;
 
     var options = {
@@ -134,6 +131,18 @@ function wellslide(obj){
     function moveRight(){
         if(moving ==false){
             moving = true;
+            $('#title').animate({
+                left: -$('#title').width() * 2
+            }, options['speed']/2, function(){
+                //TODO FIND A BETTER SOLUTION THERE
+                $('#title').text($('.actualSlide').next('#rail img:not(.ghost)').data('title'));
+                $('#title').animate({
+                    left: 0
+                }, options['speed']/2)
+            });
+
+
+
             rail.animate({
                 right: parseFloat(rail.css('right'))+width+'px',
             }, options['speed'],function(){
