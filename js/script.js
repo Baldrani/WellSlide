@@ -223,4 +223,14 @@ function wellslide(obj){
         }
     });
 
+    //Key press
+    $(document).keydown(function(e) {
+      if(e.keyCode == 37) { // left
+          moveLeft();
+      }
+      if(e.keyCode == 39) { // right
+          moveRight();
+      }
+    });
+
 }
