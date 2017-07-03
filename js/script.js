@@ -2,7 +2,7 @@ function wellslide(obj){
     'use strict';
 
     var el = obj.el;
-    var $el = $(obj.el);
+    var $el = $(el);
     var params = obj.params;
     //Définie width pour le responsive
     var width = parseFloat($('#slideshow').css('width'));
@@ -44,6 +44,9 @@ function wellslide(obj){
         rail.find('img:not(.ghost)').each(function(index){
             $(this).attr('data-index',index);
         });
+        //Set first Title and desc
+        $('#title').text($('.actualSlide').data('title'));
+        $('#description').text($('.actualSlide').data('desc'));
         //Bullets
         $el.append('<ul class="dots"></ul>');
         $('#rail img:not(.ghost)').each(function(index, el){
@@ -55,6 +58,16 @@ function wellslide(obj){
             $('.actualDots').removeClass('actualDots');
             $(this).addClass('actualDots');
         });
+        //Options Hide and Show
+        if(!options['bullets']){
+            $('.dots').hide();
+        }
+        if(options['autoPlay']){
+            playSlide();
+        }
+        if(options['hidePlay']){
+            $('#play').remove();
+        }
     });
 
     var _, play = false, moving = false;
@@ -94,7 +107,7 @@ function wellslide(obj){
         }
     };
 
-    //ARROW PART
+    //ARROW
     function moveRight(){
         if(moving == false){
             moving = true;
@@ -141,8 +154,16 @@ function wellslide(obj){
         }
     }
 
+    $('#previous').click(function(e){
+        moveLeft();
+    });
+    $('#next').click(function(){
+        moveRight();
+    });
+
+
+    //TITLE & DESC
     function animateText(){
-        //Part title and desc
         $('#title').animate({
             left: -$('#title').width() * 2
         }, options['speed']/2, function(){
@@ -157,14 +178,7 @@ function wellslide(obj){
         })
     }
 
-    $('#previous').click(function(e){
-        moveLeft();
-    });
-    $('#next').click(function(){
-        moveRight();
-    });
-
-    /* Partie Dots */
+    //DOTS
     function moveBullet(){
         $('.actualDots').removeClass('actualDots');
         $('.dots button').each(function(){
@@ -183,7 +197,7 @@ function wellslide(obj){
         $('#rail').css('right', ($('.actualSlide').data('index')+1) * width); //1 for ghost
     });
 
-    //PLAY AND HOVER PAUSE GOOD + Fix
+    //PLAY AND HOVER PAUSE
     function playSlide(){
         $('#play').find('.fa').toggleClass('fa-pause-circle-o fa-play-circle-o');
         if(play == false){
@@ -208,17 +222,5 @@ function wellslide(obj){
             play = window.setInterval(moveRight,options['speed']);
         }
     });
-
-    console.log(options);
-
-    if(options['bullets']){
-        // $('.dots').toggle();
-    }
-    if(options['autoPlay']){
-        playSlide();
-    }
-    if(options['hidePlay']){
-        $('#play').toggle();
-    }
 
 }
