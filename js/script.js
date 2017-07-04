@@ -7,7 +7,7 @@ function wellslide(obj){
     //Définie width pour le responsive
     var width = parseFloat($('#slideshow').css('width'));
 
-    //Initialise les élements TODO Add or not in function of option
+    //Initialise les élements
     $el.append('<div id="rail"></div>')
        .append('<button id="previous" style="z-index: 2"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>')
        .append('<button id="play" style="z-index: 2"><i class="fa fa-play-circle-o" aria-hidden="true"></i></button>')
@@ -73,7 +73,7 @@ function wellslide(obj){
     var _, play = false, moving = false;
 
     var options = {
-        speed: 3000,
+        speed: 2500,
         arrow: true,
         bullets: true,
         autoPlay: false,
@@ -102,7 +102,7 @@ function wellslide(obj){
             });
             if(play != false){
                 clearInterval(play);
-                play = window.setInterval(moveRight,options['speed']);
+                play = setInterval(moveRight,options['speed']);
             }
         }
     };
@@ -111,6 +111,9 @@ function wellslide(obj){
     function moveRight(){
         if(moving == false){
             moving = true;
+            if(play != false){
+                clearInterval(play);
+            }
             //Move actual Slide (for responsive)
             var next = $('#rail img.actualSlide').removeClass('actualSlide').next('#rail img:not(.ghost)');
             if( next.length != 0){
@@ -127,6 +130,10 @@ function wellslide(obj){
                 }
                 moveBullet();
                 moving = false;
+                if(play != false){
+                    clearInterval(play);
+                    play = setInterval(moveRight,options['speed']);
+                }
             });
             animateText();
         }
@@ -135,6 +142,9 @@ function wellslide(obj){
     function moveLeft(){
         if(moving == false){
             moving = true;
+            if(play != false){
+                clearInterval(play);
+            }
             var prev = $('#rail img.actualSlide').removeClass('actualSlide').prev('#rail img:not(.ghost)');
             if( prev.length != 0){
                 prev.addClass('actualSlide');
@@ -149,6 +159,10 @@ function wellslide(obj){
                 }
                 moveBullet();
                 moving = false;
+                if(play != false){
+                    clearInterval(play);
+                    play = setInterval(moveRight,options['speed']);
+                }
             });
             animateText();
         }
@@ -202,7 +216,7 @@ function wellslide(obj){
         $('#play').find('.fa').toggleClass('fa-pause-circle-o fa-play-circle-o');
         if(play == false){
             moveRight();
-            play = window.setInterval(moveRight,options['speed']);
+            play = setInterval(moveRight,options['speed']);
         } else {
             clearInterval(play);
             play = false;
@@ -219,7 +233,7 @@ function wellslide(obj){
     }, function(){
         if(play == 'pause'){
             moveRight();
-            play = window.setInterval(moveRight,options['speed']);
+            play = setInterval(moveRight,options['speed']);
         }
     });
 
