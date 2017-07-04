@@ -111,6 +111,7 @@ function wellslide(obj){
     function moveRight(){
         if(moving == false){
             moving = true;
+            //Pour eviter que le slide reparte quand le play est activé.
             if(play != false){
                 clearInterval(play);
             }
@@ -207,8 +208,8 @@ function wellslide(obj){
     $(window).resize(function(){
         width = parseFloat($('#slideshow').css('width'));
         $('#rail img').css('width',width);
-        $('#rail').css('width', ($('#rail img').length * width)+'px');
-        $('#rail').css('right', ($('.actualSlide').data('index')+1) * width); //1 for ghost
+        rail.css('width', ($('#rail img').length * width)+'px');
+        rail.css('right', ($('.actualSlide').data('index')+1) * width); //1 for ghost
     });
 
     //PLAY AND HOVER PAUSE
